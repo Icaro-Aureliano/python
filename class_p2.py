@@ -10,11 +10,11 @@ class ExtratorURL:
         else:
             return ""
 
-    def valida_url(self, url):#validando a string
+    def valida_url(self, url):#validando a url
         if not self.url:
             raise ValueError("A URL esta vazia!!")
         
-        padrao_url = re.compile("(http(s)?://)?(www.)?bytebank.com(.br)?/cambio")
+        padrao_url = re.compile("(http(s)?://)?(www.)?bytebank.com(.br)?/cambio")# o minimo que a url deve ter
 
         match = padrao_url.match(url)
 
@@ -27,7 +27,7 @@ class ExtratorURL:
         url_base = url[:url_busca]
         return url_base
 
-    def get_url_parametros(self):#pegando os parametros da url
+    def get_url_parametros(self, url):#pegando os parametros da url
         url_busca = self.url.find("?")#pesquisa na url
         url_parametros = self.url[url_busca + 1:]
         return url_parametros
@@ -42,12 +42,27 @@ class ExtratorURL:
             valor = self.get_url_parametros()[indice_valor:indice_e_comercial]
         return valor
 
+    def __len__(self):
+        return len(self.url)
+
+    def __str__(self):
+        return f"\nURL: {self.url} \nParametros: {self.get_url_parametros(self.url)} \nBase da URL: {self.get_url_base(self.url)}" 
+                
+    def __eq__(self, other):
+        return self.url == other
+
+url = "https://www.bytebank.com.br/cambio?q=macarr%C3%A3o&rs=typed&term_meta,[]=macarrao=%C3%A3o%7Ctyped"
+# print(len(url))
 
 
+extrator_url = ExtratorURL(url)
+extrator_url2 = ExtratorURL(url)
+# # extrator_url = ExtratorURL(None)
 
+print(extrator_url == extrator_url2)
 
-# extrator_url = ExtratorURL("https://br.pinterest.com/search/pins/?q=macarr%C3%A3o&rs=typed&term_meta,[]=macarrao=%C3%A3o%7Ctyped")
-extrator_url = ExtratorURL(None)
+print("Tamanho da URL: ",len(extrator_url))
+print(extrator_url)
 
-valor_quantidade = extrator_url.get_valor_parametro("")
-print(valor_quantidade)
+# valor_quantidade = extrator_url.get_valor_parametro("macarr")
+# print(valor_quantidade)
