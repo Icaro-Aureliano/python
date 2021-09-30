@@ -1,3 +1,7 @@
+import requests
+
+
+
 lista_idades = []
 idade1 = 30
 idade2 = 45
